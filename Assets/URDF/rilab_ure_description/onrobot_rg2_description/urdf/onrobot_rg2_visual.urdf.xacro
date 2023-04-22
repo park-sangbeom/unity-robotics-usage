@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<robot name="onrobot_rg2_visual" xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
+
+  <!-- ur5 -->
+  <xacro:include filename="$(find ur_e_description)/urdf/ur5e.urdf.xacro" />
+  <!-- arm -->
+  <xacro:ur5e_robot prefix="" joint_limited="false"/>
+
+  <!--onrobot_rg2_gripper-->
+  <xacro:include filename="$(find onrobot_rg2_description)/urdf/onrobot_rg2_gripper.urdf.xacro" />
+
+   <!-- workspace-->
+  <xacro:include filename="$(find ril_tamp_gazebo)/urdf/workspace.urdf.xacro" />
+
+   <!-- workspace-->
+  <xacro:include filename="$(find ril_tamp_gazebo)/urdf/table_mini_wide.urdf.xacro" />
+
+   <!--realsense d435-->
+  <xacro:include filename="$(find ril_tamp_gazebo)/urdf/_d435.urdf.xacro" />
+
+
+
+  <gazebo>
+    <plugin name="ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/</robotNamespace>
+    </plugin> 
+  </gazebo>
+
+  <joint name="world_joint" type="fixed">
+    <parent link="workspace_link" />
+    <child link = "base_link" />
+    <origin xyz="0.0 0.0 0.375" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <joint name="world_joint2" type="fixed">
+    <parent link="workspace_world" />
+    <child link = "table_base_link" />
+    <origin xyz="0.8 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <xacro:sensor_d435 name="camera" topics_ns="camera" parent="table_base_link" publish_pointcloud="true">
+    <origin xyz="0.0 0 2.0" rpy="0 1.57 0" />
+  </xacro:sensor_d435>
+
+
+  <!-- rg2 -->
+  <xacro:onrobot_rg2_gripper prefix="" parent="tool0">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:onrobot_rg2_gripper>
+
+
+</robot>
