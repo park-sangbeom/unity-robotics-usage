@@ -1,2 +1,2 @@
 # unity-robotics-usage
-Unity Robotics Tool
+Unity-Based Basic Simulation Environment for a Manipulator.
